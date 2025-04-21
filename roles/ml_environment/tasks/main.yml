@@ -3,8 +3,8 @@
     name: "{{ item }}"
     state: present
   loop:
-    - python3-pip
     - python3-venv
+    - python3-pip
   become: true
 
 - name: Create project directory
@@ -22,4 +22,22 @@
   pip:
     requirements: /opt/ml_project/requirements.txt
     virtualenv: /opt/ml_project/venv
-  notify: Upggrade pip
+  notify: Upgrade pip
+
+- name: Copy MLflow service unit file
+  template:
+    src: mlflow.service.j2
+    dest: /etc/systemd/system/mlflow.service
+  notify: Restart MLflow
+
+- name: Ensure MLflow directory exists
+  file:
+    path: /var/lib/mlflow
+    state: directory
+    owner: ubuntu
+
+- name: Start and enable MLflow service
+  service:
+    name: mlflow
+    state: started
+    enabled: true
