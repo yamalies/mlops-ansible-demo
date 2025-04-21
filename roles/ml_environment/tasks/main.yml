@@ -1,0 +1,25 @@
+- name: Install system packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-pip
+    - python3-venv
+  become: true
+
+- name: Create project directory
+  file:
+    path: /opt/ml_project
+    state: directory
+    owner: ubuntu
+
+- name: Create virtual environment
+  command: python3 -m venv /opt/ml_project/venv
+  args:
+    creates: /opt/ml_project/venv
+
+- name: Install Python dependencies
+  pip:
+    requirements: /opt/ml_project/requirements.txt
+    virtualenv: /opt/ml_project/venv
+  notify: Upggrade pip
