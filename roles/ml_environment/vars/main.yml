@@ -1,0 +1,3 @@
+mlops_user: root
+mlflow_venv_path: /opt/ml_project/venv
+mlflow_project_path: /opt/ml_project

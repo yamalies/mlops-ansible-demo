@@ -1,18 +1,20 @@
 - name: Provision ML environment
-  hosts: ml
+  hosts: localhost
+  connection: local
+  become: true
   collections:
     - community.general
     - community.docker
-  
+
   roles:
     - ml_environment
-  
+
 - name: Configure MLflow server
-  hosts: ml
+  hosts: localhost
   roles:
     - mlflow_server
 
 - name: Deploy model API
-  hosts: ml
+  hosts: localhost
   roles:
     - model_deploy

@@ -1,0 +1,17 @@
+- name: Fetch Docker image tag from env
+  set_fact:
+    image_tag: "{{ lookup('env','MODEL_TAG') }}"
+
+- name: Pull model Docker image
+  community.docker.docker_image:
+    state: present
+    name: "tensorflow/serving:latest"
+    source: pull
+    
+- name: Run model container
+  community.docker.docker_container:
+    name: ml_model_api
+    image: tensorflow/serving:latest
+    state: started
+    ports:
+      - "3000:3000"

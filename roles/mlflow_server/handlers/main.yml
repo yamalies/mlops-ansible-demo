@@ -1,0 +1,4 @@
+- name: Restart MLflow
+  service:
+    name: mlflow
+    state: restarted

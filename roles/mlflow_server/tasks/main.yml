@@ -1,0 +1,17 @@
+- name: Copy MLflow service unit file
+  template:
+    src: mlflow.service.j2
+    dest: /etc/systemd/system/mlflow.service
+  notify: Restart MLflow
+
+- name: Ensure MLflow directory exists
+  file:
+    path: /var/lib/mlflow
+    state: directory
+    owner: root
+
+- name: Copy MLflow configuration file
+  service:
+    name: mlflow
+    state: started
+    enabled: true

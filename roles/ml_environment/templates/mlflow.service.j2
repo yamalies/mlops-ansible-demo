@@ -1,0 +1,14 @@
+[Unit]
+Description=MLflow Tracking Server
+After=network.target
+
+[Service]
+User={{ mlops_user }}
+ExecStart={{ mlflow_venv_path }}/bin/mlflow server \
+  --backend-store-uri sqlite:///{{ mlflow_project_path }}/mlflow.db \
+  --default-artifact-root {{ mlflow_project_path }}/artifacts \
+  --host 0.0.0.0 --port 5000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
